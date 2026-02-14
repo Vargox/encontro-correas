@@ -183,7 +183,7 @@
         document.getElementById('refVan').innerText = `R$ ${VALOR_COTA_VAN.toFixed(2)}`;
 
         try {
-            const resp = await fetch(APP_URL);
+            const resp = await fetch(APP_URL, { method: 'GET', redirect: 'follow' });
             const dados = await resp.json();
             
             const tbody = document.querySelector('#tabP tbody');
