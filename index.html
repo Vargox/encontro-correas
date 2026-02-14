@@ -1,282 +1,84 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encontro Corrêas</title>
-    <style>
-        :root { --primary: #1a252f; --secondary: #27ae60; --accent: #e74c3c; --light: #f4f7f6; --gold: #f1c40f; --bank: #820ad1; }
-        body { font-family: sans-serif; background: var(--light); margin: 0; padding: 0; color: #333; }
-        
-        .hero { background: var(--primary); color: white; text-align: center; padding: 30px 10px; border-bottom: 5px solid var(--gold); position: relative; }
-        .hero h1 { margin: 10px 0; font-size: 1.6rem; text-transform: uppercase; }
-        
-        .timer-grid { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
-        .timer-box { background: rgba(255,255,255,0.1); padding: 8px; border-radius: 5px; min-width: 60px; border-bottom: 2px solid var(--gold); }
-        .timer-box b { display: block; font-size: 1.3rem; color: var(--gold); }
-        .timer-box small { font-size: 0.6rem; text-transform: uppercase; }
-
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media (min-width: 768px) { .container { grid-template-columns: 1.4fr 1fr; } }
-
-        section { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h3 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 0; color: var(--primary); font-size: 1.1rem; }
-
-        /* DASHBOARD */
-        .dash { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card { padding: 12px; border-radius: 8px; color: white; text-align: center; font-size: 0.85rem; }
-        .blue { background: #3498db; } .green { background: #27ae60; } .red { background: #e74c3c; } .gold-card { background: var(--gold); color: #333; }
-        .purple { background: var(--bank); }
-
-        /* COTAS REFERÊNCIA */
-        .cotas-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 8px; }
-        .cota-item { text-align: center; border-right: 1px solid #eee; }
-        .cota-item:last-child { border-right: none; }
-        .cota-item small { display: block; font-size: 0.7rem; color: #666; text-transform: uppercase; }
-        .cota-item b { font-size: 1rem; color: var(--primary); }
-
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        th, td { border-bottom: 1px solid #eee; padding: 10px 5px; text-align: left; }
-        
-        #muralContainer { max-height: 250px; overflow-y: auto; background: #fffde7; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
-        .post-it { background: white; padding: 8px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid var(--gold); box-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
-        
-        input, select, button { width: 100%; padding: 10px; margin: 4px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
-        button { background: var(--secondary); color: white; font-weight: bold; border: none; cursor: pointer; }
-        #admSet { display: none; background: #fff5f5; border: 2px dashed var(--accent); padding: 15px; border-radius: 10px; margin-top: 10px; }
-        
-        .pix-box { background: white; border: 2px dashed var(--secondary); padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; position: relative; }
-        #tooltip { display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--secondary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; }
-        #status-bar { text-align: center; font-size: 0.75rem; color: #888; padding: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encontro Corrêas</title>
+<style>
+:root { --primary: #1a252f; --secondary: #27ae60; --accent: #e74c3c; --light: #f4f7f6; --gold: #f1c40f; --bank: #820ad1; }
+body { font-family: sans-serif; background: var(--light); margin: 0; padding: 0; color: #333; }
+.hero { background: var(--primary); color: white; text-align: center; padding: 30px 10px; border-bottom: 5px solid var(--gold); position: relative; }
+.hero h1 { margin: 10px 0; font-size: 1.6rem; text-transform: uppercase; }
+.timer-grid { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+.timer-box { background: rgba(255,255,255,0.1); padding: 8px; border-radius: 5px; min-width: 60px; border-bottom: 2px solid var(--gold); }
+.timer-box b { display: block; font-size: 1.3rem; color: var(--gold); }
+.timer-box small { font-size: 0.6rem; text-transform: uppercase; }
+.container { max-width: 1100px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 768px) { .container { grid-template-columns: 1.4fr 1fr; } }
+section { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+h3 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 0; color: var(--primary); font-size: 1.1rem; }
+.dash { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.card { padding: 12px; border-radius: 8px; color: white; text-align: center; font-size: 0.85rem; }
+.blue { background: #3498db; } .green { background: #27ae60; } .red { background: #e74c3c; } .gold-card { background: var(--gold); color: #333; }
+.purple { background: var(--bank); }
+.cotas-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 8px; }
+.cota-item { text-align: center; border-right: 1px solid #eee; }
+.cota-item:last-child { border-right: none; }
+.cota-item small { display: block; font-size: 0.7rem; color: #666; text-transform: uppercase; }
+.cota-item b { font-size: 1rem; color: var(--primary); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th, td { border-bottom: 1px solid #eee; padding: 10px 5px; text-align: left; }
+#muralContainer { max-height: 250px; overflow-y: auto; background: #fffde7; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
+.post-it { background: white; padding: 8px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid var(--gold); box-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+input, select, button { width: 100%; padding: 10px; margin: 4px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
+button { background: var(--secondary); color: white; font-weight: bold; border: none; cursor: pointer; }
+#admSet { display: none; background: #fff5f5; border: 2px dashed var(--accent); padding: 15px; border-radius: 10px; margin-top: 10px; }
+.pix-box { background: white; border: 2px dashed var(--secondary); padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; position: relative; }
+#tooltip { display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--secondary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; }
+#status-bar { text-align: center; font-size: 0.75rem; color: #888; padding: 10px; }
+</style>
 </head>
 <body>
 
 <div class="hero">
-    <div onclick="abrirAdmin()" style="position:absolute; top:15px; right:20px; cursor:pointer; opacity:0.3; font-size: 24px;">🔒</div>
-    <h1>Encontro Corrêas &</h1>
-    <div class="timer-grid">
-        <div class="timer-box"><b id="d">00</b><small>Dias</small></div>
-        <div class="timer-box"><b id="h">00</b><small>Hrs</small></div>
-        <div class="timer-box"><b id="m">00</b><small>Min</small></div>
-        <div class="timer-box"><b id="s">00</b><small>Seg</small></div>
-    </div>
+<div onclick="abrirAdmin()" style="position:absolute; top:15px; right:20px; cursor:pointer; opacity:0.3; font-size: 24px;">🔒</div>
+<h1>Encontro Corrêas &</h1>
+<div class="timer-grid">
+<div class="timer-box"><b id="d">00</b><small>Dias</small></div>
+<div class="timer-box"><b id="h">00</b><small>Hrs</small></div>
+<div class="timer-box"><b id="m">00</b><small>Min</small></div>
+<div class="timer-box"><b id="s">00</b><small>Seg</small></div>
+</div>
 </div>
 
 <div id="status-bar">Sincronizando...</div>
 
 <div class="container">
-    <div class="col-main">
-        <section>
-            <h3>📊 Resumo Financeiro</h3>
-            <div class="dash">
-                <div class="card blue">Custos<br><b id="vG">R$ 0</b></div>
-                <div class="card gold-card">Extras/Rifas<br><b id="vE">R$ 0</b></div>
-                <div class="card green">Total Pago<br><b id="vR">R$ 0</b></div>
-                <div class="card red" id="cS">Saldo Real<br><b id="vS">R$ 0</b></div>
-                <div class="card purple" style="grid-column: span 2;">
-                    ✨ Rendimento Estimado (100% CDI): <b id="vCDI">R$ 0,00</b>
-                </div>
-            </div>
+<div class="col-main">
+<section>
+<h3>📊 Resumo Financeiro</h3>
+<div class="dash">
+<div class="card blue">Custos
 
-            <div class="cotas-box">
-                <div class="cota-item">
-                    <small>Cota Mensal (Carro)</small>
-                    <b id="refCarro">R$ 25,00</b>
-                </div>
-                <div class="cota-item">
-                    <small>Cota Mensal (Van)</small>
-                    <b id="refVan">R$ 50,00</b>
-                </div>
-            </div>
 
-            <div style="margin-top:15px;">
-                <div class="pix-box" onclick="copiarPix()">
-                    <div id="tooltip">Copiado!</div>
-                    <small>Copiar chave PIX:</small><br>
-                    <b id="chavePix">uguto29@gmail.com</b>
-                </div>
-            </div>
-        </section>
+<b id="vG">R$ 0</b></div>
+<div class="card gold-card">Extras/Rifas
 
-        <section>
-            <h3>👥 Lista de Presença</h3>
-            <div class="table-wrap">
-                <table id="tabP">
-                    <thead><tr><th>Nome</th><th>Camisa</th><th>Transporte</th><th>Total Pago</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-    </div>
 
-    <div class="col-side">
-        <section>
-            <h3>📝 Mural</h3>
-            <div id="muralContainer">Carregando...</div>
-            <input type="text" id="mNome" placeholder="Seu Nome">
-            <input type="text" id="mMsg" placeholder="Sua Mensagem">
-            <button onclick="salvarMensagem()" style="background:var(--primary)">Postar Recado</button>
-        </section>
+<b id="vE">R$ 0</b></div>
+<div class="card green">Total Pago
 
-        <div id="admSet">
-            <h3 style="color:var(--accent)">⚙️ Lançamento</h3>
-            <input type="text" id="pN" placeholder="NOME DO FAMILIAR">
-            <input type="text" id="pT" placeholder="Tamanho Camisa">
-            <select id="pTransp">
-                <option value="Carro">Vai de Carro</option>
-                <option value="Van">Vai de Van 🚐</option>
-            </select>
-            <input type="number" id="pV" placeholder="Valor Pago R$">
-            <button onclick="salvarPessoa()">Lançar Pagamento</button>
-            <hr>
-            <input type="text" id="fD" placeholder="Desc. Gasto/Extra">
-            <input type="number" id="fV" placeholder="Valor R$">
-            <button onclick="salvarGasto('Gasto')" style="background:var(--accent)">+ Gasto</button>
-            <button onclick="salvarGasto('Extra')" style="background:var(--gold); color:#333">+ Extra</button>
-            <button onclick="sairAdmin()" style="background:#666; margin-top:10px;">Sair</button>
-        </div>
-    </div>
+
+<b id="vR">R$ 0</b></div>
+<div class="card red" id="cS">Saldo Real
+
+
+<b id="vS">R$ 0</b></div>
+<div class="card purple" style="grid-column: span 2;">
+✨ Rendimento CDI Estimado: <b id="vCDI">R$ 0,00</b>
+</div>
 </div>
 
-<script>
-    const APP_URL = "https://script.google.com/macros/s/AKfycbytY8QmvFAtEpjKS-vasmV7xOjmr0UdJo8rv8EN3tmlRRYWijlAJuDw3boiElTLeNLa/exec";
-    
-    // --- DEFINA OS VALORES DAS COTAS AQUI ---
-    const VALOR_COTA = 25.00;
-    const VALOR_COTA_VAN = 50.00;
-    const DATA_INICIO_POUPANCA = new Date("January 01, 2026"); 
-
-    function abrirAdmin() {
-        if (prompt("Senha:") === "Correada7") {
-            localStorage.setItem("adminLogado", "true");
-            document.getElementById('admSet').style.display = 'block';
-        }
-    }
-
-    function verificarLogin() {
-        if (localStorage.getItem("adminLogado") === "true") {
-            document.getElementById('admSet').style.display = 'block';
-        }
-    }
-
-    function sairAdmin() {
-        localStorage.removeItem("adminLogado");
-        document.getElementById('admSet').style.display = 'none';
-    }
-
-    function calcularDiasUteis(dataInicial, dataFinal) {
-        let diasUteis = 0;
-        let dataAtual = new Date(dataInicial);
-        while (dataAtual <= dataFinal) {
-            const diaSemana = dataAtual.getDay();
-            if (diaSemana !== 0 && diaSemana !== 6) diasUteis++;
-            dataAtual.setDate(dataAtual.getDate() + 1);
-        }
-        return diasUteis;
-    }
-
-    async function carregarDados() {
-        // Atualiza os textos das cotas na tela
-        document.getElementById('refCarro').innerText = `R$ ${VALOR_COTA_CARRO.toFixed(2)}`;
-        document.getElementById('refVan').innerText = `R$ ${VALOR_COTA_VAN.toFixed(2)}`;
-
-        try {
-            const resp = await fetch(APP_URL, { method: 'GET', redirect: 'follow' });
-            const dados = await resp.json();
-            
-            const tbody = document.querySelector('#tabP tbody');
-            const mural = document.getElementById('muralContainer');
-            let tg = 0, tr = 0, te = 0;
-            const pessoasAgrupadas = {};
-
-            tbody.innerHTML = ''; mural.innerHTML = '';
-
-            dados.forEach(col => {
-                const [tipo, nome, valorRaw, info] = col;
-                const valor = parseFloat(valorRaw) || 0;
-
-                if (tipo === "Pessoa") {
-                    tr += valor;
-                    if (!pessoasAgrupadas[nome]) {
-                        pessoasAgrupadas[nome] = { valorTotal: 0, info: info || '' };
-                    }
-                    pessoasAgrupadas[nome].valorTotal += valor;
-                    if (info && info.includes('|')) pessoasAgrupadas[nome].info = info;
-                } else if (tipo === "Gasto") tg += valor;
-                else if (tipo === "Extra") te += valor;
-                else if (tipo === "Mensagem") {
-                    mural.innerHTML = `<div class="post-it"><b>${nome} disse:</b>${info}</div>` + mural.innerHTML;
-                }
-            });
-
-            for (const nome in pessoasAgrupadas) {
-                const p = pessoasAgrupadas[nome];
-                const partes = p.info ? p.info.split('|') : ['-', '-'];
-                tbody.innerHTML += `<tr><td><b>${nome}</b></td><td>${partes[0] || '-'}</td><td>${partes[1] || '-'}</td><td>R$ ${p.valorTotal.toFixed(2)}</td></tr>`;
-            }
-
-            let saldoAtual = (tr + te) - tg;
-            const diasUteis = calcularDiasUteis(DATA_INICIO_POUPANCA, new Date());
-            const taxaDiariaCdi = 0.00043; 
-            let rendimentoEstimado = saldoAtual > 0 ? saldoAtual * (Math.pow(1 + taxaDiariaCdi, diasUteis) - 1) : 0;
-
-            document.getElementById('vG').innerText = `R$ ${tg.toFixed(2)}`;
-            document.getElementById('vE').innerText = `R$ ${te.toFixed(2)}`;
-            document.getElementById('vR').innerText = `R$ ${tr.toFixed(2)}`;
-            document.getElementById('vS').innerText = `R$ ${saldoAtual.toFixed(2)}`;
-            document.getElementById('vCDI').innerText = `R$ ${rendimentoEstimado.toFixed(2)}`;
-            
-            document.getElementById('cS').style.background = saldoAtual >= 0 ? "#27ae60" : "#e74c3c";
-            document.getElementById('status-bar').innerText = "Sincronizado";
-        } catch (e) {
-            document.getElementById('status-bar').innerText = "Erro ao carregar.";
-        }
-    }
-
-    async function enviarDados(tipo, nome, valor, extra) {
-        document.getElementById('status-bar').innerText = "Enviando...";
-        try {
-            await fetch(APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ tipo, nome, valor, extra }) });
-            location.reload();
-        } catch (e) { alert("Erro ao salvar."); }
-    }
-
-    function salvarPessoa() {
-        const nome = document.getElementById('pN').value.trim();
-        const infoComposta = document.getElementById('pT').value + " | " + document.getElementById('pTransp').value;
-        enviarDados("Pessoa", nome, document.getElementById('pV').value, infoComposta);
-    }
-
-    function salvarMensagem() {
-        enviarDados("Mensagem", document.getElementById('mNome').value, 0, document.getElementById('mMsg').value);
-    }
-
-    function salvarGasto(tipo) {
-        enviarDados(tipo, document.getElementById('fD').value, document.getElementById('fV').value, "");
-    }
-
-    function copiarPix() {
-        navigator.clipboard.writeText("uguto29@gmail.com");
-        const t = document.getElementById("tooltip");
-        t.style.display = "block"; setTimeout(() => { t.style.display = "none"; }, 2000);
-    }
-
-    function startTimer() {
-        const target = new Date("July 25, 2026 00:00:00").getTime();
-        setInterval(() => {
-            const diff = target - new Date().getTime();
-            if (diff > 0) {
-                document.getElementById("d").innerText = Math.floor(diff / 86400000);
-                document.getElementById("h").innerText = Math.floor((diff % 86400000) / 3600000);
-                document.getElementById("m").innerText = Math.floor((diff % 3600000) / 60000);
-                document.getElementById("s").innerText = Math.floor((diff % 60000) / 1000);
-            }
-        }, 1000);
-    }
-
-    window.onload = () => { startTimer(); carregarDados(); verificarLogin(); };
-</script>
-</body>
-</html>
+</div>
