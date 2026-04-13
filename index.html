@@ -58,7 +58,7 @@
                 <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Arrecadação Família</p>
                 <h3 id="dashPessoas" class="text-3xl font-bold mb-2">R$ 0,00</h3>
                 <div class="inline-flex items-center bg-blue-800/50 px-3 py-1 rounded-full text-xs">
-                    <i class="fas fa-van-shuttle mr-2"></i> <span id="countVan">0</span> na Van
+                    <i class="fas fa-users mr-2"></i> <span id="countParticipantes">0</span> Participantes
                 </div>
             </div>
 
@@ -134,8 +134,7 @@
                         <div>
                             <label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Categoria</label>
                             <select id="admTipo" class="w-full p-3 border rounded-xl bg-white outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="van">Van (Meta: R$ 600)</option>
-                                <option value="carro">Carro Próprio (Meta: R$ 300)</option>
+                                <option value="cota">Cota Família (Meta: R$ 250)</option>
                                 <option value="apenasCamisa">Só Camisa (Meta: R$ 60)</option>
                                 <option value="rifa">Rifa / Extra</option>
                                 <option value="doacao">Doação</option>
@@ -191,7 +190,7 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        const METAS = { van: 600, carro: 300, apenasCamisa: 60 };
+        const METAS = { cota: 250, apenasCamisa: 60 };
         const ADMIN_KEY = "Correas2026!Seguro"; // <-- TROQUE AQUI PELA SENHA DESEJADA
 
         function esc(str) {
@@ -258,7 +257,7 @@
         function renderFinancas(transacoes) {
             let totalFamilia = 0, totalExtras = 0;
             let totalCamisas = 0;
-            const passageirosUnicos = new Set();
+            const participantesUnicos = new Set();
             const malharia = {};
             const progressoPessoas = {};
             const tabelaHistorico = document.getElementById('tabelaHistorico');
@@ -284,11 +283,11 @@
                     </tr>
                 `;
 
-                if (['van', 'carro', 'apenasCamisa'].includes(tr.tipo)) {
+                if (['cota', 'apenasCamisa'].includes(tr.tipo)) {
                     totalFamilia += valorNum;
                     if(!progressoPessoas[nomeKey]) progressoPessoas[nomeKey] = { totalPago: 0, tipo: tr.tipo };
                     progressoPessoas[nomeKey].totalPago += valorNum;
-                    if(tr.tipo === 'van') passageirosUnicos.add(nomeKey);
+                    if(tr.tipo === 'cota') participantesUnicos.add(nomeKey);
                 } else {
                     totalExtras += valorNum;
                 }
@@ -330,7 +329,7 @@
 
             const listaExtras = document.getElementById('listaExtras');
             listaExtras.innerHTML = '';
-            Object.values(transacoes).filter(t => !['van', 'carro', 'apenasCamisa'].includes(t.tipo)).forEach(t => {
+            Object.values(transacoes).filter(t => !['cota', 'apenasCamisa'].includes(t.tipo)).forEach(t => {
                 listaExtras.innerHTML += `<div class="flex justify-between p-2 border-b text-xs"><span>${esc(t.nome)} <span class="text-purple-400 uppercase">(${esc(t.tipo)})</span></span><span class="font-bold text-purple-700">R$ ${(Number(t.valor) || 0).toFixed(2)}</span></div>`;
             });
 
@@ -345,7 +344,7 @@
             document.getElementById('dashExtras').innerText = `R$ ${totalExtras.toFixed(2)}`;
             document.getElementById('dashCDI').innerText = `R$ ${cdi.toFixed(2)}`;
             document.getElementById('dashSaldo').innerText = `R$ ${(totalFamilia + totalExtras + cdi).toFixed(2)}`;
-            document.getElementById('countVan').innerText = passageirosUnicos.size;
+            document.getElementById('countParticipantes').innerText = participantesUnicos.size;
             document.getElementById('countCamisas').innerText = totalCamisas;
         }
 
