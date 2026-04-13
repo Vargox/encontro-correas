@@ -1,63 +1,368 @@
-Gemini said
 <!DOCTYPE html>
-
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Encontro Corrêas</title>
-<style>
-:root { --primary: #1a252f; --secondary: #27ae60; --accent: #e74c3c; --light: #f4f7f6; --gold: #f1c40f; --bank: #820ad1; }
-body { font-family: sans-serif; background: var(--light); margin: 0; padding: 0; color: #333; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrêas & | Gestão 2026</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-cursive { font-family: 'Dancing Script', cursive; }
+        .hero-bg { background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; }
+        .adm-only { display: none; }
+        .is-adm .adm-only { display: block; }
+        
+        /* POST-IT STYLE */
+        .post-it { 
+            background: #fef08a; padding: 20px; min-height: 140px; 
+            transform: rotate(-1deg); transition: 0.3s; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.1); border-bottom-right-radius: 40px 5px;
+        }
+        .post-it:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+        .post-it:nth-child(even) { background: #bfdbfe; transform: rotate(1deg); }
+
+        /* PROGRESS BAR */
+        .progress-track { background: #e2e8f0; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; transition: width 0.6s ease; background: linear-gradient(90deg, #34d399, #10b981); }
+
+        /* SCROLL */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+    </style>
 </head>
 <body>
 
-<div class="hero">
-<div onclick="abrirAdmin()" style="position:absolute; top:15px; right:20px; cursor:pointer; opacity:0.3; font-size: 24px;">🔒</div>
-<h1>Encontro Corrêas &</h1>
-<div class="timer-grid">
-<div class="timer-box"><b id="d">00</b><small>Dias</small></div>
-<div class="timer-box"><b id="h">00</b><small>Hrs</small></div>
-<div class="timer-box"><b id="m">00</b><small>Min</small></div>
-<div class="timer-box"><b id="s">00</b><small>Seg</small></div>
-</div>
-</div>
+    <header class="hero-bg text-white py-12 px-4 text-center shadow-2xl relative">
+        <h1 class="text-6xl md:text-8xl font-cursive text-yellow-400 mb-4 drop-shadow-lg">Corrêas &</h1>
+        <p class="text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-8 text-blue-200">Encontro da Família 2026</p>
+        
+        <div class="inline-block bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+            <button onclick="copiarPix()" class="flex items-center gap-2 font-bold text-sm hover:text-yellow-300 transition">
+                <i class="fas fa-copy"></i> PIX: uguto29@gmail.com
+            </button>
+        </div>
+    </header>
 
-<div id="status-bar">Sincronizando...</div>
+    <main class="container mx-auto px-4 py-10 max-w-7xl">
+        
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="bg-blue-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-blue-500/30 text-9xl"><i class="fas fa-users"></i></div>
+                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Arrecadação Família</p>
+                <h3 id="dashPessoas" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <div class="inline-flex items-center bg-blue-800/50 px-3 py-1 rounded-full text-xs">
+                    <i class="fas fa-van-shuttle mr-2"></i> <span id="countVan">0</span> na Van
+                </div>
+            </div>
 
-<div class="container">
-<div class="col-main">
-<section>
-<h3>📊 Resumo Financeiro</h3>
-<div class="dash">
-<div class="card blue">Custos
+            <div class="bg-purple-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-purple-500/30 text-9xl"><i class="fas fa-ticket-alt"></i></div>
+                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Rifas e Doações</p>
+                <h3 id="dashExtras" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <div class="inline-flex items-center bg-purple-800/50 px-3 py-1 rounded-full text-xs">
+                    <i class="fas fa-tshirt mr-2"></i> <span id="countCamisas">0</span> Camisas
+                </div>
+            </div>
 
+            <div class="bg-emerald-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-emerald-500/30 text-9xl"><i class="fas fa-chart-line"></i></div>
+                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Rendimento CDI</p>
+                <h3 id="dashCDI" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <p class="text-[10px] opacity-70">Calculado desde 01/01/2026</p>
+            </div>
 
-<b id="vG">R$ 0</b></div>
-<div class="card gold-card">Extras/Rifas
+            <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border-b-4 border-yellow-500 relative overflow-hidden">
+                <p class="text-[10px] font-bold uppercase text-yellow-400 mb-2 text-center">Saldo Disponível</p>
+                <h3 id="dashSaldo" class="text-4xl font-bold text-center">R$ 0,00</h3>
+            </div>
+        </section>
 
+        <section class="mb-20">
+            <h2 class="text-3xl font-cursive text-slate-800 text-center mb-10">Mural da Família</h2>
+            <div id="muralContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 px-4"></div>
+            
+            <div class="max-w-lg mx-auto bg-white p-2 rounded-full shadow-lg border flex">
+                <input type="text" id="mNome" placeholder="Seu Nome" class="w-1/3 p-3 rounded-l-full outline-none text-sm pl-6">
+                <input type="text" id="mMsg" placeholder="Deixe um recado..." class="w-2/3 p-3 outline-none text-sm border-l">
+                <button onclick="postarRecado()" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-6 rounded-r-full transition"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </section>
 
-<b id="vE">R$ 0</b></div>
-<div class="card green">Total Pago
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-bold text-slate-700 uppercase text-xs tracking-widest"><i class="fas fa-list-check mr-2 text-blue-500"></i> Progresso das Cotas</h2>
+                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded text-slate-400">Base: 12 parcelas</span>
+                </div>
+                <div id="listaPessoas" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
 
+            <div class="space-y-6">
+                <div class="bg-white rounded-3xl shadow-sm border p-6">
+                    <h2 class="font-bold text-purple-600 mb-4 uppercase text-xs tracking-widest"><i class="fas fa-hand-holding-heart mr-2"></i> Rifas e Doações</h2>
+                    <div id="listaExtras" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scroll"></div>
+                </div>
 
-<b id="vR">R$ 0</b></div>
-<div class="card red" id="cS">Saldo Real
+                <div class="bg-indigo-900 rounded-3xl shadow-xl p-6 text-white">
+                    <h2 class="font-bold mb-4 uppercase text-[10px] tracking-widest opacity-70 border-b border-indigo-700 pb-2">Relatório Malharia</h2>
+                    <div id="resumoCamisas" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
 
+        <div class="mt-24 text-center border-t border-slate-200 pt-10 pb-20">
+            <button onclick="toggleAdm()" class="text-slate-300 text-[10px] font-bold uppercase tracking-widest hover:text-slate-500 transition">Acesso Restrito</button>
+            
+            <div class="adm-only mt-8 max-w-4xl mx-auto text-left">
+                
+                <div class="p-8 bg-white border-2 border-dashed border-slate-300 rounded-3xl shadow-2xl relative mb-10">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-slate-100 px-4 text-xs font-bold text-slate-400">NOVO LANÇAMENTO</div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Nome (Agrupa automático)</label>
+                            <input type="text" id="admNome" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Categoria</label>
+                            <select id="admTipo" class="w-full p-3 border rounded-xl bg-white outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="van">Van (Meta: R$ 600)</option>
+                                <option value="carro">Carro Próprio (Meta: R$ 300)</option>
+                                <option value="apenasCamisa">Só Camisa (Meta: R$ 60)</option>
+                                <option value="rifa">Rifa / Extra</option>
+                                <option value="doacao">Doação</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-emerald-500 uppercase mb-1 block">Valor Recebido (R$)</label>
+                            <input type="number" id="admValor" class="w-full p-3 border border-emerald-200 rounded-xl bg-emerald-50 font-bold outline-none focus:ring-2 focus:ring-emerald-500" placeholder="0.00">
+                        </div>
+                        <div class="md:col-span-2 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                            <label class="text-[10px] font-bold text-indigo-500 uppercase mb-1 block">
+                                <i class="fas fa-tshirt mr-1"></i> Pedido de Camisa 
+                                <span class="text-[9px] text-red-400 normal-case ml-2"> (Preencha se houver alteração ou novo pedido)</span>
+                            </label>
+                            <input type="text" id="admCamisas" class="w-full p-2 border border-indigo-200 rounded-lg uppercase text-sm placeholder-indigo-300" placeholder="Ex: 1G, 1M (Deixe vazio p/ apenas pagar)">
+                        </div>
+                    </div>
+                    <button onclick="salvarEntrada()" class="w-full mt-6 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition shadow-lg transform active:scale-95">Confirmar Lançamento</button>
+                </div>
 
-<b id="vS">R$ 0</b></div>
-<div class="card purple" style="grid-column: span 2;">
-✨ Rendimento Estimado (100% CDI): <b id="vCDI">R$ 0,00</b>
-</div>
-</div>
+                <div class="bg-white rounded-3xl shadow border p-6">
+                    <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2"><i class="fas fa-history text-slate-400"></i> Histórico Completo <span class="text-xs font-normal text-slate-400">(Use a lixeira para corrigir erros)</span></h3>
+                    <div class="overflow-x-auto max-h-96 custom-scroll">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-[10px] uppercase text-slate-400 sticky top-0">
+                                <tr>
+                                    <th class="p-3">Nome / Tipo</th>
+                                    <th class="p-3">Valor</th>
+                                    <th class="p-3">Camisas</th>
+                                    <th class="p-3 text-right">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaHistorico" class="divide-y"></tbody>
+                        </table>
+                    </div>
+                </div>
 
-</div>
+            </div>
+        </div>
+    </main>
 
-<script>
-const APP_URL = "";
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDF0MIwpU9FN24zx5BpBDBjLjbFJhJPlMg",
+            authDomain: "encontro-correas.firebaseapp.com",
+            databaseURL: "https://encontro-correas-default-rtdb.firebaseio.com",
+            projectId: "encontro-correas",
+            storageBucket: "encontro-correas.firebasestorage.app",
+            messagingSenderId: "899128416737",
+            appId: "1:899128416737:web:0d0c5b7a7867c050d61aa0",
+            measurementId: "G-5KN13VGJ8P"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-</script>
+        const METAS = { van: 600, carro: 300, apenasCamisa: 60 };
+        const ADMIN_KEY = "Correas2026!Seguro"; // <-- TROQUE AQUI PELA SENHA DESEJADA
 
+        function esc(str) {
+            if (str == null) return '';
+            return String(str).replace(/[&<>'"]/g, function(m) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[m];
+            });
+        }
+
+        window.salvarEntrada = function() {
+            const n = document.getElementById('admNome').value.trim();
+            const t = document.getElementById('admTipo').value;
+            const v = parseFloat(document.getElementById('admValor').value);
+            const c = document.getElementById('admCamisas').value.trim();
+
+            if(!n || isNaN(v)) return alert("Preencha Nome e Valor corretamente!");
+
+            database.ref('transacoes').push({
+                nome: n, tipo: t, valor: v, camisas: c, data: Date.now(), adminKey: ADMIN_KEY
+            }).then(() => {
+                alert("Lançado com sucesso!");
+                document.getElementById('admValor').value = '';
+                document.getElementById('admCamisas').value = ''; 
+            });
+        };
+
+        window.excluirItem = function(key) {
+            if(confirm("Tem certeza que deseja apagar este lançamento? O valor e as camisas serão subtraídos do total.")) {
+                database.ref('transacoes/' + key).remove();
+            }
+        };
+
+        let lastPostTime = 0;
+        window.postarRecado = function() {
+            const n = document.getElementById('mNome').value.trim();
+            const m = document.getElementById('mMsg').value.trim();
+            if(!n || !m) return alert("Preencha seu nome e o recado.");
+            if(n.length > 50 || m.length > 280) return alert("Nome ou recado muito longo. Limite: 50 e 280 caracteres.");
+
+            const now = Date.now();
+            if(now - lastPostTime < 5000) return alert("Aguarde alguns segundos antes de enviar outro recado.");
+
+            database.ref('recados').push({ nome: n, msg: m, data: now });
+            document.getElementById('mMsg').value = '';
+            lastPostTime = now;
+        };
+
+        database.ref('transacoes').on('value', (snap) => {
+            renderFinancas(snap.val() || {});
+        });
+
+        database.ref('recados').limitToLast(20).on('value', (snap) => {
+            renderMural(snap.val() || {});
+        });
+
+        function renderMural(recados) {
+            const mural = document.getElementById('muralContainer');
+            mural.innerHTML = '';
+            Object.values(recados).reverse().forEach(r => {
+                mural.innerHTML += `<div class="post-it"><p class="font-cursive text-xl text-slate-800">"${esc(r.msg)}"</p><p class="text-right text-[10px] font-bold uppercase opacity-50 text-slate-600">- ${esc(r.nome)}</p></div>`;
+            });
+        }
+
+        function renderFinancas(transacoes) {
+            let totalFamilia = 0, totalExtras = 0;
+            let totalCamisas = 0;
+            const passageirosUnicos = new Set();
+            const malharia = {};
+            const progressoPessoas = {};
+            const tabelaHistorico = document.getElementById('tabelaHistorico');
+            tabelaHistorico.innerHTML = '';
+
+            Object.entries(transacoes).forEach(([key, tr]) => {
+                const nomeKey = String(tr.nome).toUpperCase().trim();
+                const valorNum = Number(tr.valor) || 0;
+
+                tabelaHistorico.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3">
+                            <div class="font-bold text-slate-700">${esc(tr.nome)}</div>
+                            <div class="text-[9px] uppercase text-slate-400">${esc(tr.tipo)}</div>
+                        </td>
+                        <td class="p-3 font-mono text-emerald-600 font-bold">R$ ${valorNum.toFixed(2)}</td>
+                        <td class="p-3 text-xs uppercase text-indigo-600">${esc(tr.camisas) || '-'}</td>
+                        <td class="p-3 text-right">
+                            <button onclick="excluirItem('${esc(key)}')" class="text-red-400 hover:text-red-600 px-2 py-1 border border-red-200 rounded hover:bg-red-50 transition">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+
+                if (['van', 'carro', 'apenasCamisa'].includes(tr.tipo)) {
+                    totalFamilia += valorNum;
+                    if(!progressoPessoas[nomeKey]) progressoPessoas[nomeKey] = { totalPago: 0, tipo: tr.tipo };
+                    progressoPessoas[nomeKey].totalPago += valorNum;
+                    if(tr.tipo === 'van') passageirosUnicos.add(nomeKey);
+                } else {
+                    totalExtras += valorNum;
+                }
+
+                if(tr.camisas) {
+                    const itens = String(tr.camisas).split(/[,;]/);
+                    itens.forEach(item => {
+                        const match = item.trim().toUpperCase().match(/^(\d+)?\s*(.*)/);
+                        if(match && match[2]) {
+                            const qtd = match[1] ? parseInt(match[1]) : 1;
+                            let tamanho = match[2].replace(/[^A-Z0-9-]/g, '');
+                            if(tamanho) {
+                                malharia[tamanho] = (malharia[tamanho] || 0) + qtd;
+                                totalCamisas += qtd;
+                            }
+                        }
+                    });
+                }
+            });
+
+            const listaPessoas = document.getElementById('listaPessoas');
+            listaPessoas.innerHTML = '';
+            Object.keys(progressoPessoas).sort().forEach(nome => {
+                const p = progressoPessoas[nome];
+                const meta = METAS[p.tipo] || 600;
+                const parcelas = (p.totalPago / (meta/12)).toFixed(1);
+                const perc = Math.min(100, (p.totalPago / meta) * 100);
+                const cor = perc >= 100 ? 'bg-emerald-500' : (perc < 30 ? 'bg-red-400' : 'bg-blue-500');
+
+                listaPessoas.innerHTML += `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    <div class="flex justify-between mb-1">
+                        <div><h4 class="font-bold text-slate-700 text-sm">${esc(nome)}</h4><span class="text-[9px] uppercase text-blue-400 font-bold">${esc(p.tipo)}</span></div>
+                        <div class="text-right"><span class="text-xs font-bold text-slate-600">${parcelas}/12</span></div>
+                    </div>
+                    <div class="progress-track"><div class="h-full ${cor}" style="width: ${perc}%"></div></div>
+                </div>`;
+            });
+
+            const listaExtras = document.getElementById('listaExtras');
+            listaExtras.innerHTML = '';
+            Object.values(transacoes).filter(t => !['van', 'carro', 'apenasCamisa'].includes(t.tipo)).forEach(t => {
+                listaExtras.innerHTML += `<div class="flex justify-between p-2 border-b text-xs"><span>${esc(t.nome)} <span class="text-purple-400 uppercase">(${esc(t.tipo)})</span></span><span class="font-bold text-purple-700">R$ ${(Number(t.valor) || 0).toFixed(2)}</span></div>`;
+            });
+
+            const resCamisas = document.getElementById('resumoCamisas');
+            resCamisas.innerHTML = '';
+            for(let t in malharia) {
+                resCamisas.innerHTML += `<div class="flex justify-between border-b border-indigo-700/30 pb-1 text-xs font-bold text-indigo-200"><span>TAM ${esc(t)}</span><span class="text-yellow-400">${malharia[t]} un</span></div>`;
+            }
+
+            const cdi = calcularCDI(totalFamilia + totalExtras);
+            document.getElementById('dashPessoas').innerText = `R$ ${totalFamilia.toFixed(2)}`;
+            document.getElementById('dashExtras').innerText = `R$ ${totalExtras.toFixed(2)}`;
+            document.getElementById('dashCDI').innerText = `R$ ${cdi.toFixed(2)}`;
+            document.getElementById('dashSaldo').innerText = `R$ ${(totalFamilia + totalExtras + cdi).toFixed(2)}`;
+            document.getElementById('countVan').innerText = passageirosUnicos.size;
+            document.getElementById('countCamisas').innerText = totalCamisas;
+        }
+
+        function calcularCDI(v) {
+            const d = Math.max(0, Math.floor((new Date() - new Date('2026-01-01')) / 86400000));
+            return v * (Math.pow(1.1115, d/365) - 1);
+        }
+
+        function toggleAdm() { 
+            const senha = prompt("Senha de Administrador:");
+            if(senha === ADMIN_KEY) {
+                document.body.classList.toggle('is-adm');
+            } else {
+                alert("Senha incorreta.");
+            }
+        }
+        function copiarPix() { navigator.clipboard.writeText("uguto29@gmail.com"); alert("PIX copiado!"); }
+    </script>
 </body>
 </html>
