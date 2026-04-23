@@ -300,7 +300,7 @@
             if(!desc || !data || isNaN(valor)) return alert("Preencha Descrição, Data e Valor corretamente!");
 
             database.ref('despesas').push({
-                descricao: desc, data: data, valor: valor, dataCriacao: Date.now()
+                descricao: desc, data: data, valor: valor, dataCriacao: Date.now(), adminKey: ADMIN_KEY
             }).then(() => {
                 alert("Despesa registrada com sucesso!");
                 document.getElementById('despDescricao').value = '';
