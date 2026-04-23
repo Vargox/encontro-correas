@@ -449,6 +449,7 @@
             document.getElementById('dashCDI').innerText = `R$ ${cdi.toFixed(2)}`;
             document.getElementById('countParticipantes').innerText = participantesUnicos.size;
             document.getElementById('countCamisas').innerText = totalCamisas;
+            atualizarSaldoComDespesas();
         }
 
         let totalDespesasGlobal = 0;
