@@ -169,6 +169,7 @@
                         </div>
                     </div>
                     <button onclick="salvarEntrada()" class="w-full mt-6 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition shadow-lg transform active:scale-95">Confirmar Lançamento</button>
+                    <button onclick="limparTudo()" class="w-full mt-2 bg-red-600 text-white py-2 rounded-xl font-bold hover:bg-red-700 transition text-xs">⚠️ LIMPAR TODOS OS DADOS</button>
                 </div>
 
                 <div class="p-8 bg-white border-2 border-dashed border-red-300 rounded-3xl shadow-2xl relative mb-10">
@@ -279,6 +280,15 @@
         window.excluirDespesa = function(key) {
             if(confirm("Tem certeza que deseja apagar esta despesa? O valor será devolvido ao saldo.")) {
                 database.ref('despesas/' + key).remove();
+            }
+        };
+
+        window.limparTudo = function() {
+            if(confirm("ATENÇÃO: Isso apagará TODOS os dados (transações, despesas e recados). Esta ação não pode ser desfeita. Continuar?")) {
+                database.ref('transacoes').remove();
+                database.ref('despesas').remove();
+                database.ref('recados').remove();
+                alert("Todos os dados foram apagados. Recarregue a página.");
             }
         };
 
