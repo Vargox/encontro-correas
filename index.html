@@ -63,7 +63,17 @@
 
     <header class="hero-bg text-white py-12 px-4 text-center shadow-2xl relative">
         <h1 class="text-6xl md:text-8xl font-cursive text-yellow-400 mb-4 drop-shadow-lg">Corrêas &</h1>
-        <p class="text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-8 text-blue-200">Encontro da Família 2026</p>
+        <p class="text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-4 text-blue-200">Encontro da Família 2026</p>
+        
+        <div class="inline-block bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 mb-6">
+            <p class="text-[10px] uppercase tracking-wider opacity-70 mb-2">Faltam</p>
+            <div id="countdown" class="flex gap-4 justify-center text-center">
+                <div><span id="cd-dias" class="text-3xl font-bold">000</span><p class="text-[9px] uppercase opacity-60">Dias</p></div>
+                <div><span id="cd-horas" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Horas</p></div>
+                <div><span id="cd-min" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Min</p></div>
+                <div><span id="cd-sec" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Seg</p></div>
+            </div>
+        </div>
         
         <div class="inline-block bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
             <button onclick="copiarPix()" class="flex items-center gap-2 font-bold text-sm hover:text-yellow-300 transition">
@@ -557,6 +567,29 @@
             }
         }
         function copiarPix() { navigator.clipboard.writeText("uguto29@gmail.com"); alert("PIX copiado!"); }
+
+        // Contagem regressiva para 26/07/2026
+        function atualizarCountdown() {
+            const dataEvento = new Date('2026-07-26T00:00:00');
+            const agora = new Date();
+            const diferenca = dataEvento - agora;
+
+            if (diferenca > 0) {
+                const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-dias').textContent = dias.toString().padStart(3, '0');
+                document.getElementById('cd-horas').textContent = horas.toString().padStart(2, '0');
+                document.getElementById('cd-min').textContent = minutos.toString().padStart(2, '0');
+                document.getElementById('cd-sec').textContent = segundos.toString().padStart(2, '0');
+            } else {
+                document.getElementById('countdown').innerHTML = '<p class="text-2xl font-bold text-yellow-400">🎉 É HOJE! 🎉</p>';
+            }
+        }
+        atualizarCountdown();
+        setInterval(atualizarCountdown, 1000);
     </script>
 </body>
 </html>
