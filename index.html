@@ -35,6 +35,28 @@
         /* SCROLL */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+        /* ANIMAÇÕES */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        .card-1 { animation-delay: 0.1s; }
+        .card-2 { animation-delay: 0.2s; }
+        .card-3 { animation-delay: 0.3s; }
+        .card-4 { animation-delay: 0.4s; }
+
+        /* LOADING SPINNER */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -50,37 +72,37 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-10 max-w-7xl">
+    <main class="container mx-auto px-4 py-16 max-w-7xl">
         
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            <div class="bg-blue-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+            <div class="bg-blue-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden opacity-0 animate-fade-in-up card-1">
                 <div class="absolute -right-4 -top-4 text-blue-500/30 text-9xl"><i class="fas fa-users"></i></div>
                 <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Arrecadação Família</p>
-                <h3 id="dashPessoas" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <h3 id="dashPessoas" class="text-3xl font-bold mb-2 flex items-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
                 <div class="inline-flex items-center bg-blue-800/50 px-3 py-1 rounded-full text-xs">
                     <i class="fas fa-users mr-2"></i> <span id="countParticipantes">0</span> Participantes
                 </div>
             </div>
 
-            <div class="bg-purple-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+            <div class="bg-purple-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden opacity-0 animate-fade-in-up card-2">
                 <div class="absolute -right-4 -top-4 text-purple-500/30 text-9xl"><i class="fas fa-ticket-alt"></i></div>
                 <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Rifas e Doações</p>
-                <h3 id="dashExtras" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <h3 id="dashExtras" class="text-3xl font-bold mb-2 flex items-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
                 <div class="inline-flex items-center bg-purple-800/50 px-3 py-1 rounded-full text-xs">
                     <i class="fas fa-tshirt mr-2"></i> <span id="countCamisas">0</span> Camisas
                 </div>
             </div>
 
-            <div class="bg-emerald-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+            <div class="bg-emerald-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden opacity-0 animate-fade-in-up card-3">
                 <div class="absolute -right-4 -top-4 text-emerald-500/30 text-9xl"><i class="fas fa-chart-line"></i></div>
                 <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Rendimento CDI</p>
-                <h3 id="dashCDI" class="text-3xl font-bold mb-2">R$ 0,00</h3>
+                <h3 id="dashCDI" class="text-3xl font-bold mb-2 flex items-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
                 <p class="text-[10px] opacity-70">Calculado desde 01/01/2026</p>
             </div>
 
-            <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border-b-4 border-yellow-500 relative overflow-hidden">
+            <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border-b-4 border-yellow-500 relative overflow-hidden opacity-0 animate-fade-in-up card-4">
                 <p class="text-[10px] font-bold uppercase text-yellow-400 mb-2 text-center">Saldo Disponível</p>
-                <h3 id="dashSaldo" class="text-4xl font-bold text-center">R$ 0,00</h3>
+                <h3 id="dashSaldo" class="text-4xl font-bold text-center flex items-center justify-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
             </div>
         </section>
 
@@ -135,7 +157,9 @@
         </div>
 
         <div class="mt-24 text-center border-t border-slate-200 pt-10 pb-20">
-            <button onclick="toggleAdm()" class="text-slate-300 text-[10px] font-bold uppercase tracking-widest hover:text-slate-500 transition">Acesso Restrito</button>
+            <button onclick="toggleAdm()" class="inline-flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest hover:text-slate-600 transition bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-full">
+                <i class="fas fa-lock"></i> Acesso Administrativo
+            </button>
             
             <div class="adm-only mt-8 max-w-4xl mx-auto text-left">
                 
@@ -246,6 +270,11 @@
 
         const METAS = { cota: 250, apenasCamisa: 30 };
         const ADMIN_KEY = "Correas2026!Seguro"; // <-- TROQUE AQUI PELA SENHA DESEJADA
+
+        // Mostrar spinner de loading inicialmente
+        document.querySelectorAll('.loading-text').forEach(el => {
+            el.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;border-top-color:white;"></div>';
+        });
 
         function esc(str) {
             if (str == null) return '';
@@ -444,9 +473,9 @@
             }
 
             const cdi = calcularCDI(totalFamilia + totalExtras);
-            document.getElementById('dashPessoas').innerText = `R$ ${totalFamilia.toFixed(2)}`;
-            document.getElementById('dashExtras').innerText = `R$ ${totalExtras.toFixed(2)}`;
-            document.getElementById('dashCDI').innerText = `R$ ${cdi.toFixed(2)}`;
+            document.getElementById('dashPessoas').innerHTML = `R$ ${totalFamilia.toFixed(2)}`;
+            document.getElementById('dashExtras').innerHTML = `R$ ${totalExtras.toFixed(2)}`;
+            document.getElementById('dashCDI').innerHTML = `R$ ${cdi.toFixed(2)}`;
             document.getElementById('countParticipantes').innerText = participantesUnicos.size;
             document.getElementById('countCamisas').innerText = totalCamisas;
             atualizarSaldoComDespesas();
@@ -502,16 +531,16 @@
         }
 
         function atualizarSaldoComDespesas() {
-            const dashPessoas = document.getElementById('dashPessoas').innerText;
-            const dashExtras = document.getElementById('dashExtras').innerText;
-            const dashCDI = document.getElementById('dashCDI').innerText;
+            const dashPessoas = document.getElementById('dashPessoas').textContent;
+            const dashExtras = document.getElementById('dashExtras').textContent;
+            const dashCDI = document.getElementById('dashCDI').textContent;
             
             const totalFamilia = parseFloat(dashPessoas.replace('R$ ', '').replace(',', '.')) || 0;
             const totalExtras = parseFloat(dashExtras.replace('R$ ', '').replace(',', '.')) || 0;
             const cdi = parseFloat(dashCDI.replace('R$ ', '').replace(',', '.')) || 0;
             
             const saldoTotal = totalFamilia + totalExtras + cdi - totalDespesasGlobal;
-            document.getElementById('dashSaldo').innerText = `R$ ${saldoTotal.toFixed(2)}`;
+            document.getElementById('dashSaldo').innerHTML = `R$ ${saldoTotal.toFixed(2)}`;
         }
 
         function calcularCDI(v) {
