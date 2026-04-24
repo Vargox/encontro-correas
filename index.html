@@ -456,15 +456,17 @@
             Object.keys(progressoPessoas).sort().forEach(nome => {
                 const p = progressoPessoas[nome];
                 const meta = METAS[p.tipo] || 600;
-                const parcelas = (p.totalPago / (meta/12)).toFixed(1);
+                const isApenasCamisa = p.tipo === 'apenasCamisa';
+                const parcelas = isApenasCamisa ? null : (p.totalPago / (meta/12)).toFixed(1);
                 const perc = Math.min(100, (p.totalPago / meta) * 100);
                 const cor = perc >= 100 ? 'bg-emerald-500' : (perc < 30 ? 'bg-red-400' : 'bg-blue-500');
+                const statusLabel = isApenasCamisa ? 'Pago' : `${parcelas}/12`;
 
                 listaPessoas.innerHTML += `
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <div class="flex justify-between mb-1">
                         <div><h4 class="font-bold text-slate-700 text-sm">${esc(nome)}</h4><span class="text-[9px] uppercase text-blue-400 font-bold">${esc(p.tipo)}</span></div>
-                        <div class="text-right"><span class="text-xs font-bold text-slate-600">${parcelas}/12</span></div>
+                        <div class="text-right"><span class="text-xs font-bold text-slate-600">${statusLabel}</span></div>
                     </div>
                     <div class="progress-track"><div class="h-full ${cor}" style="width: ${perc}%"></div></div>
                 </div>`;
