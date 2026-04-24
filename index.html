@@ -63,22 +63,37 @@
 
     <header class="hero-bg text-white py-12 px-4 text-center shadow-2xl relative">
         <h1 class="text-6xl md:text-8xl font-cursive text-yellow-400 mb-4 drop-shadow-lg">Corrêas &</h1>
-        <p class="text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-4 text-blue-200">Encontro da Família 2026</p>
+        <p class="text-xs font-bold uppercase tracking-[0.4em] opacity-60 mb-8 text-blue-200">Encontro da Família 2026</p>
         
-        <div class="inline-block bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 mb-6">
-            <p class="text-[10px] uppercase tracking-wider opacity-70 mb-2">Faltam</p>
-            <div id="countdown" class="flex gap-4 justify-center text-center">
-                <div><span id="cd-dias" class="text-3xl font-bold">000</span><p class="text-[9px] uppercase opacity-60">Dias</p></div>
-                <div><span id="cd-horas" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Horas</p></div>
-                <div><span id="cd-min" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Min</p></div>
-                <div><span id="cd-sec" class="text-3xl font-bold">00</span><p class="text-[9px] uppercase opacity-60">Seg</p></div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 flex-1 max-w-md">
+                <p class="text-[10px] uppercase tracking-wider opacity-70 mb-3">Faltam</p>
+                <div id="countdown" class="flex gap-3 justify-center text-center">
+                    <div class="bg-white/10 rounded-lg px-3 py-2">
+                        <span id="cd-dias" class="text-2xl font-bold">000</span>
+                        <p class="text-[8px] uppercase opacity-60">Dias</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg px-3 py-2">
+                        <span id="cd-horas" class="text-2xl font-bold">00</span>
+                        <p class="text-[8px] uppercase opacity-60">Horas</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg px-3 py-2">
+                        <span id="cd-min" class="text-2xl font-bold">00</span>
+                        <p class="text-[8px] uppercase opacity-60">Min</p>
+                    </div>
+                    <div class="bg-white/10 rounded-lg px-3 py-2">
+                        <span id="cd-sec" class="text-2xl font-bold">00</span>
+                        <p class="text-[8px] uppercase opacity-60">Seg</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="inline-block bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
-            <button onclick="copiarPix()" class="flex items-center gap-2 font-bold text-sm hover:text-yellow-300 transition">
-                <i class="fas fa-copy"></i> PIX: uguto29@gmail.com
-            </button>
+            
+            <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 flex-1 max-w-md">
+                <p class="text-[10px] uppercase tracking-wider opacity-70 mb-3">Contribuição</p>
+                <button onclick="copiarPix()" class="flex items-center justify-center gap-2 font-bold text-sm hover:text-yellow-300 transition bg-white/10 rounded-lg px-4 py-3 hover:bg-white/20">
+                    <i class="fas fa-copy"></i> PIX: uguto29@gmail.com
+                </button>
+            </div>
         </div>
     </header>
 
@@ -103,16 +118,16 @@
                 </div>
             </div>
 
-            <div class="bg-emerald-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden opacity-0 animate-fade-in-up card-3">
-                <div class="absolute -right-4 -top-4 text-emerald-500/30 text-9xl"><i class="fas fa-chart-line"></i></div>
-                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Rendimento CDI</p>
-                <h3 id="dashCDI" class="text-3xl font-bold mb-2 flex items-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
-                <p class="text-[10px] opacity-70">Calculado desde 01/01/2026</p>
-            </div>
-
-            <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border-b-4 border-yellow-500 relative overflow-hidden opacity-0 animate-fade-in-up card-4">
+            <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border-b-4 border-yellow-500 relative overflow-hidden opacity-0 animate-fade-in-up card-3">
                 <p class="text-[10px] font-bold uppercase text-yellow-400 mb-2 text-center">Saldo Disponível</p>
                 <h3 id="dashSaldo" class="text-4xl font-bold text-center flex items-center justify-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
+            </div>
+
+            <div class="bg-emerald-600 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden opacity-0 animate-fade-in-up card-4">
+                <div class="absolute -right-4 -top-4 text-emerald-500/30 text-9xl"><i class="fas fa-chart-line"></i></div>
+                <p class="text-[10px] font-bold uppercase opacity-80 mb-2">Total Arrecadado</p>
+                <h3 id="dashTotal" class="text-3xl font-bold mb-2 flex items-center gap-2"><span class="loading-text">R$ 0,00</span></h3>
+                <p class="text-[10px] opacity-70">Família + Extras</p>
             </div>
         </section>
 
@@ -185,7 +200,7 @@
                             <label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Categoria</label>
                             <select id="admTipo" class="w-full p-3 border rounded-xl bg-white outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="cota">Cota Família (Meta: R$ 250)</option>
-                                <option value="apenasCamisa">Só Camisa (Meta: R$ 60)</option>
+                                <option value="apenasCamisa">Só Camisa (Meta: R$ 30)</option>
                                 <option value="rifa">Rifa / Extra</option>
                                 <option value="doacao">Doação</option>
                             </select>
@@ -393,7 +408,12 @@
             const mural = document.getElementById('muralContainer');
             mural.innerHTML = '';
             Object.values(recados).reverse().forEach(r => {
-                mural.innerHTML += `<div class="post-it"><p class="font-cursive text-xl text-slate-800">"${esc(r.msg)}"</p><p class="text-right text-[10px] font-bold uppercase opacity-50 text-slate-600">- ${esc(r.nome)}</p></div>`;
+                const postIt = document.createElement('div');
+                postIt.className = 'post-it';
+                postIt.innerHTML = `<p class="font-cursive text-xl text-slate-800"></p><p class="text-right text-[10px] font-bold uppercase opacity-50 text-slate-600"></p>`;
+                postIt.querySelector('p:first-child').textContent = `"${r.msg}"`;
+                postIt.querySelector('p:last-child').textContent = `- ${r.nome}`;
+                mural.appendChild(postIt);
             });
         }
 
@@ -417,7 +437,7 @@
                             <div class="text-[9px] uppercase text-slate-400">${esc(tr.tipo)}</div>
                         </td>
                         <td class="p-3 font-mono text-emerald-600 font-bold">R$ ${valorNum.toFixed(2)}</td>
-                        <td class="p-3 text-xs uppercase text-indigo-600">${esc(tr.camisas) || '-'}</td>
+                        <td class="p-3 text-xs uppercase text-indigo-600"></td>
                         <td class="p-3 text-right">
                             <button data-key="${key}" class="text-red-400 hover:text-red-600 px-2 py-1 border border-red-200 rounded hover:bg-red-50 transition">
                                 <i class="fas fa-trash-alt"></i>
@@ -425,6 +445,7 @@
                         </td>
                     </tr>
                 `;
+                tabelaHistorico.lastElementChild.querySelector('td:nth-child(3)').textContent = tr.camisas || '-';
 
                 if (['cota', 'apenasCamisa'].includes(tr.tipo)) {
                     totalFamilia += valorNum;
@@ -462,32 +483,45 @@
                 const cor = perc >= 100 ? 'bg-emerald-500' : (perc < 30 ? 'bg-red-400' : 'bg-blue-500');
                 const statusLabel = isApenasCamisa ? 'Pago' : `${parcelas}/12`;
 
-                listaPessoas.innerHTML += `
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 p-4 rounded-2xl border border-slate-100';
+                card.innerHTML = `
                     <div class="flex justify-between mb-1">
-                        <div><h4 class="font-bold text-slate-700 text-sm">${esc(nome)}</h4><span class="text-[9px] uppercase text-blue-400 font-bold">${esc(p.tipo)}</span></div>
+                        <div><h4 class="font-bold text-slate-700 text-sm"></h4><span class="text-[9px] uppercase text-blue-400 font-bold"></span></div>
                         <div class="text-right"><span class="text-xs font-bold text-slate-600">${statusLabel}</span></div>
                     </div>
                     <div class="progress-track"><div class="h-full ${cor}" style="width: ${perc}%"></div></div>
-                </div>`;
+                `;
+                card.querySelector('h4').textContent = nome;
+                card.querySelector('span').textContent = p.tipo;
+                listaPessoas.appendChild(card);
             });
 
             const listaExtras = document.getElementById('listaExtras');
             listaExtras.innerHTML = '';
             Object.values(transacoes).filter(t => !['cota', 'apenasCamisa'].includes(t.tipo)).forEach(t => {
-                listaExtras.innerHTML += `<div class="flex justify-between p-2 border-b text-xs"><span>${esc(t.nome)} <span class="text-purple-400 uppercase">(${esc(t.tipo)})</span></span><span class="font-bold text-purple-700">R$ ${(Number(t.valor) || 0).toFixed(2)}</span></div>`;
+                const item = document.createElement('div');
+                item.className = 'flex justify-between p-2 border-b text-xs';
+                item.innerHTML = `<span></span><span class="font-bold text-purple-700"></span>`;
+                item.querySelector('span:first-child').innerHTML = `${t.nome} <span class="text-purple-400 uppercase">(${t.tipo})</span>`;
+                item.querySelector('span:last-child').textContent = `R$ ${(Number(t.valor) || 0).toFixed(2)}`;
+                listaExtras.appendChild(item);
             });
 
             const resCamisas = document.getElementById('resumoCamisas');
             resCamisas.innerHTML = '';
             for(let t in malharia) {
-                resCamisas.innerHTML += `<div class="flex justify-between border-b border-indigo-700/30 pb-1 text-xs font-bold text-indigo-200"><span>TAM ${esc(t)}</span><span class="text-yellow-400">${malharia[t]} un</span></div>`;
+                const item = document.createElement('div');
+                item.className = 'flex justify-between border-b border-indigo-700/30 pb-1 text-xs font-bold text-indigo-200';
+                item.innerHTML = `<span></span><span class="text-yellow-400"></span>`;
+                item.querySelector('span:first-child').textContent = `TAM ${t}`;
+                item.querySelector('span:last-child').textContent = `${malharia[t]} un`;
+                resCamisas.appendChild(item);
             }
 
-            const cdi = calcularCDI(totalFamilia + totalExtras);
             document.getElementById('dashPessoas').innerHTML = `R$ ${totalFamilia.toFixed(2)}`;
             document.getElementById('dashExtras').innerHTML = `R$ ${totalExtras.toFixed(2)}`;
-            document.getElementById('dashCDI').innerHTML = `R$ ${cdi.toFixed(2)}`;
+            document.getElementById('dashTotal').innerHTML = `R$ ${(totalFamilia + totalExtras).toFixed(2)}`;
             document.getElementById('countParticipantes').innerText = participantesUnicos.size;
             document.getElementById('countCamisas').innerText = totalCamisas;
             atualizarSaldoComDespesas();
@@ -513,20 +547,22 @@
                     totalDespesasGlobal += valorNum;
                     const dataFormatada = new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR');
 
-                    listaDespesas.innerHTML += `
-                        <div class="flex justify-between items-center p-4 bg-red-50 rounded-xl border border-red-100">
-                            <div class="flex-1">
-                                <p class="font-bold text-slate-700 text-sm">${esc(d.descricao)}</p>
-                                <p class="text-[10px] text-slate-400 uppercase">${dataFormatada}</p>
-                            </div>
-                            <span class="font-bold text-red-600">R$ ${valorNum.toFixed(2)}</span>
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center p-4 bg-red-50 rounded-xl border border-red-100';
+                    item.innerHTML = `
+                        <div class="flex-1">
+                            <p class="font-bold text-slate-700 text-sm"></p>
+                            <p class="text-[10px] text-slate-400 uppercase">${dataFormatada}</p>
                         </div>
+                        <span class="font-bold text-red-600">R$ ${valorNum.toFixed(2)}</span>
                     `;
+                    item.querySelector('p').textContent = d.descricao;
+                    listaDespesas.appendChild(item);
 
                     tabelaDespesas.innerHTML += `
                         <tr class="hover:bg-red-50">
                             <td class="p-3 text-xs text-slate-600">${dataFormatada}</td>
-                            <td class="p-3 font-bold text-slate-700">${esc(d.descricao)}</td>
+                            <td class="p-3 font-bold text-slate-700"></td>
                             <td class="p-3 font-mono text-red-600 font-bold">R$ ${valorNum.toFixed(2)}</td>
                             <td class="p-3 text-right">
                                 <button data-key="${key}" class="text-red-400 hover:text-red-600 px-2 py-1 border border-red-200 rounded hover:bg-red-50 transition">
@@ -535,6 +571,7 @@
                             </td>
                         </tr>
                     `;
+                    tabelaDespesas.lastElementChild.querySelector('td:nth-child(2)').textContent = d.descricao;
                 });
             }
 
@@ -545,19 +582,12 @@
         function atualizarSaldoComDespesas() {
             const dashPessoas = document.getElementById('dashPessoas').textContent;
             const dashExtras = document.getElementById('dashExtras').textContent;
-            const dashCDI = document.getElementById('dashCDI').textContent;
             
             const totalFamilia = parseFloat(dashPessoas.replace('R$ ', '').replace(',', '.')) || 0;
             const totalExtras = parseFloat(dashExtras.replace('R$ ', '').replace(',', '.')) || 0;
-            const cdi = parseFloat(dashCDI.replace('R$ ', '').replace(',', '.')) || 0;
             
-            const saldoTotal = totalFamilia + totalExtras + cdi - totalDespesasGlobal;
+            const saldoTotal = totalFamilia + totalExtras - totalDespesasGlobal;
             document.getElementById('dashSaldo').innerHTML = `R$ ${saldoTotal.toFixed(2)}`;
-        }
-
-        function calcularCDI(v) {
-            const d = Math.max(0, Math.floor((new Date() - new Date('2026-01-01')) / 86400000));
-            return v * (Math.pow(1.1115, d/365) - 1);
         }
 
         function toggleAdm() { 
